@@ -18,7 +18,7 @@ public class VersionControlController {
     @PostMapping("/latest")
     public ResponseEntity<String> fetchLatestFiles(@RequestBody VersionControlRequest request) {
         try {
-            VersionControlService service = VersionControlServiceFactory.getService(request.getRepoUrl());
+            VersionControlService service = VersionControlServiceFactory.getService(request.getRepoLocation());
             service.fetchLatestFiles(request);
             return ResponseEntity.ok("Fetched latest files successfully.");
         } catch (Exception e) {

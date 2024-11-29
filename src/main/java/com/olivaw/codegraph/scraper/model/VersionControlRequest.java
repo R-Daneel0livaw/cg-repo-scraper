@@ -2,17 +2,20 @@ package com.olivaw.codegraph.scraper.model;
 
 public class VersionControlRequest {
 
-    private String repoUrl;
+    private String repoLocation;
     private String username;
     private String password;
+    private ResultDestinationType destinationType;
     private String localPath;
+    private String s3BucketName;
+    private String s3Key;
 
-    public String getRepoUrl() {
-        return repoUrl;
+    public String getRepoLocation() {
+        return repoLocation;
     }
 
-    public void setRepoUrl(String repoUrl) {
-        this.repoUrl = repoUrl;
+    public void setRepoLocation(String repoLocation) {
+        this.repoLocation = repoLocation;
     }
 
     public String getUsername() {
@@ -31,11 +34,35 @@ public class VersionControlRequest {
         this.password = password;
     }
 
+    public ResultDestinationType getDestinationType() {
+        return destinationType;
+    }
+
     public String getLocalPath() {
         return localPath;
     }
 
     public void setLocalPath(String localPath) {
         this.localPath = localPath;
+    }
+
+    public String getS3BucketName() {
+        return s3BucketName;
+    }
+
+    public void setS3BucketName(String s3BucketName) {
+        this.s3BucketName = s3BucketName;
+    }
+
+    public String getS3Key() {
+        return s3Key;
+    }
+
+    public void setS3Key(String s3Key) {
+        this.s3Key = s3Key;
+    }
+
+    public void setDestinationType(ResultDestinationType destinationType) {
+        this.destinationType = destinationType;
     }
 }
