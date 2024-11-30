@@ -15,11 +15,19 @@ java {
 
 repositories {
 	mavenCentral()
+	maven {
+		url "https://repo.eclipse.org/content/groups/releases/"
+	}
 }
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.eclipse.jgit:org.eclipse.jgit:7.0.0.202409031743-r'
+	implementation 'org.eclipse.jgit:org.eclipse.jgit.archive:7.0.0.202409031743-r'
+	implementation 'org.eclipse.jgit:org.eclipse.jgit.ssh.jsch:7.0.0.202409031743-r'
+	implementation 'org.eclipse.jgit:org.eclipse.jgit.ssh.apache:7.0.0.202409031743-r'
+	implementation 'org.tukaani:xz:1.9'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
