@@ -2,6 +2,7 @@ package com.olivaw.codegraph.scraper.service;
 
 import com.olivaw.codegraph.scraper.model.VersionControlRequest;
 import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.errors.GitAPIException;
 
 
 import java.util.List;
@@ -9,11 +10,13 @@ import java.util.List;
 public class GitHubService implements VersionControlService {
     @Override
     public void fetchLatestFiles(VersionControlRequest request) throws Exception {
-        Git.cloneRepository()
+        try (Git git = Git.cloneRepository()
                 .setURI(request.getRepoLocation())
                 .setDirectory(null)
-                .setDepth(1)
-                .call();
+                .call()) {
+        } catch (GitAPIException e) {
+
+        }
     }
 
     @Override
