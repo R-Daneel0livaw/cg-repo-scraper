@@ -13,6 +13,7 @@ public class GitHubService implements VersionControlService {
         try (Git git = Git.cloneRepository()
                 .setURI(request.getRepoLocation())
                 .setDirectory(null)
+                .setDepth(1)
                 .call()) {
         } catch (GitAPIException e) {
 
