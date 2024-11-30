@@ -9,7 +9,11 @@ import java.util.List;
 public class GitHubService implements VersionControlService {
     @Override
     public void fetchLatestFiles(VersionControlRequest request) throws Exception {
-        Git.cloneRepository();
+        Git.cloneRepository()
+                .setURI(request.getRepoLocation())
+                .setDirectory(null)
+                .setDepth(1)
+                .call();
     }
 
     @Override
