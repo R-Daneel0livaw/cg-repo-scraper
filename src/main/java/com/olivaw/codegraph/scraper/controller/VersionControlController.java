@@ -27,8 +27,10 @@ public class VersionControlController {
     }
 
     @PostMapping("/history/full")
-    public ResponseEntity<String> fetchFullHistory() {
+    public ResponseEntity<String> fetchFullHistory(@RequestBody VersionControlRequest request) {
         try {
+            VersionControlService service = VersionControlServiceFactory.getService(request.getRepoLocation());
+            service.fetchLatestFiles(request);
             return ResponseEntity.ok("Fetched full history successfully.");
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error: " + e.getMessage());
@@ -36,7 +38,7 @@ public class VersionControlController {
     }
 
     @PostMapping("/history/date-range")
-    public ResponseEntity<List<String>> fetchHistoryBetweenDates() {
+    public ResponseEntity<List<String>> fetchHistoryBetweenDates(@RequestBody VersionControlRequest request) {
         try {
             return ResponseEntity.ok(null);
         } catch (Exception e) {
@@ -45,7 +47,7 @@ public class VersionControlController {
     }
 
     @PostMapping("/diff")
-    public ResponseEntity<String> fetchDiff() {
+    public ResponseEntity<String> fetchDiff(@RequestBody VersionControlRequest request) {
         try {
             return ResponseEntity.ok(null);
         } catch (Exception e) {
