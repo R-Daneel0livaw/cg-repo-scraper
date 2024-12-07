@@ -9,13 +9,7 @@ import org.eclipse.jgit.api.errors.GitAPIException;
 public class GitUtils {
 
     public static void performGitAction(GitActionConfig config, GitAction action) {
-        CloneCommand cloneCommand = Git.cloneRepository()
-                .setURI(config.getRepoLocation())
-                .setDirectory(config.getTargetDirectory());
-
-        if (config.getDepth() > 0) {
-            cloneCommand.setDepth(config.getDepth());
-        }
+        CloneCommand cloneCommand = getCloneCommand(config);
 
         try (Git git = cloneCommand.call()) {
             action.execute(git);
@@ -25,6 +19,16 @@ public class GitUtils {
     }
 
     public static void performGitAction(GitActionConfig config) {
+        CloneCommand cloneCommand = getCloneCommand(config);
+
+        try (Git git = cloneCommand.call()) {
+            System.out.println("Repository cloned successfully to: " + config.getTargetDirectory().getAbsolutePath());
+        } catch (GitAPIException e) {
+            throw new RuntimeException("Failed to perform Git operation: " + e.getMessage(), e);
+        }
+    }
+
+    private static CloneCommand getCloneCommand(GitActionConfig config) {
         CloneCommand cloneCommand = Git.cloneRepository()
                 .setURI(config.getRepoLocation())
                 .setDirectory(config.getTargetDirectory());
@@ -32,11 +36,6 @@ public class GitUtils {
         if (config.getDepth() > 0) {
             cloneCommand.setDepth(config.getDepth());
         }
-
-        try (Git git = cloneCommand.call()) {
-            System.out.println("Repository cloned successfully to: " + config.getTargetDirectory().getAbsolutePath());
-        } catch (GitAPIException e) {
-            throw new RuntimeException("Failed to perform Git operation: " + e.getMessage(), e);
-        }
+        return cloneCommand;
     }
 }
