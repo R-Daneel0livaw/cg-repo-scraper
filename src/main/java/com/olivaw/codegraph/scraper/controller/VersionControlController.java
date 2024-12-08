@@ -1,7 +1,6 @@
 package com.olivaw.codegraph.scraper.controller;
 
 import com.olivaw.codegraph.scraper.model.VersionControlRequest;
-import com.olivaw.codegraph.scraper.service.VersionControlService;
 import com.olivaw.codegraph.scraper.service.VersionControlServiceFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +17,7 @@ public class VersionControlController {
     @PostMapping("/latest")
     public ResponseEntity<String> fetchLatestFiles(@RequestBody VersionControlRequest request) {
         try {
-            VersionControlService service = VersionControlServiceFactory.getService(request.getRepoLocation());
+            var service = VersionControlServiceFactory.getService(request.getRepoLocation());
             service.fetchLatestFiles(request);
             return ResponseEntity.ok("Fetched latest files successfully.");
         } catch (Exception e) {
@@ -29,7 +28,7 @@ public class VersionControlController {
     @PostMapping("/history/full")
     public ResponseEntity<String> fetchFullHistory(@RequestBody VersionControlRequest request) {
         try {
-            VersionControlService service = VersionControlServiceFactory.getService(request.getRepoLocation());
+            var service = VersionControlServiceFactory.getService(request.getRepoLocation());
             service.fetchLatestFiles(request);
             return ResponseEntity.ok("Fetched full history successfully.");
         } catch (Exception e) {

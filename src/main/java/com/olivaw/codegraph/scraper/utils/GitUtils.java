@@ -15,9 +15,9 @@ import java.util.Comparator;
 public class GitUtils {
 
     public static void performGitAction(GitActionConfig config, GitAction action) {
-        CloneCommand cloneCommand = getCloneCommand(config);
+        var cloneCommand = getCloneCommand(config);
 
-        try (Git git = cloneCommand.call()) {
+        try (var git = cloneCommand.call()) {
             action.execute(git);
         } catch (GitAPIException e) {
             throw new RuntimeException("Failed to perform Git operation: " + e.getMessage(), e);
@@ -27,9 +27,9 @@ public class GitUtils {
     }
 
     public static void performGitAction(GitActionConfig config) {
-        CloneCommand cloneCommand = getCloneCommand(config);
+        var cloneCommand = getCloneCommand(config);
 
-        try (Git git = cloneCommand.call()) {
+        try (var git = cloneCommand.call()) {
             System.out.println("Repository cloned successfully to: " + config.getTargetDirectory().getAbsolutePath());
         } catch (GitAPIException e) {
             throw new RuntimeException("Failed to perform Git operation: " + e.getMessage(), e);
@@ -39,7 +39,7 @@ public class GitUtils {
     }
 
     private static CloneCommand getCloneCommand(GitActionConfig config) {
-        CloneCommand cloneCommand = Git.cloneRepository()
+        var cloneCommand = Git.cloneRepository()
                 .setURI(config.getRepoLocation())
                 .setDirectory(config.getTargetDirectory());
 
