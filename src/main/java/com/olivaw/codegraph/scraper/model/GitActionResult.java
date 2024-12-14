@@ -5,6 +5,10 @@ public class GitActionResult<T> {
     private boolean success;
     private String message;
 
+    public GitActionResult(T data) {
+        this.data = data;
+    }
+
     public GitActionResult(T data, boolean success, String message) {
         this.data = data;
         this.success = success;

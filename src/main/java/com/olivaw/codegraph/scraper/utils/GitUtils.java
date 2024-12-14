@@ -1,6 +1,7 @@
 package com.olivaw.codegraph.scraper.utils;
 
 import com.olivaw.codegraph.scraper.model.GitActionConfig;
+import com.olivaw.codegraph.scraper.model.GitActionResult;
 import com.olivaw.codegraph.scraper.service.GitAction;
 import org.eclipse.jgit.api.CloneCommand;
 import org.eclipse.jgit.api.Git;
@@ -14,11 +15,11 @@ import java.util.Comparator;
 
 public class GitUtils {
 
-    public static void performGitAction(GitActionConfig config, GitAction action) {
+    public static <T> GitActionResult<T> performGitAction(GitActionConfig config, GitAction<T> action) {
         var cloneCommand = getCloneCommand(config);
 
         try (var git = cloneCommand.call()) {
-            action.execute(git);
+            return action.execute(git);
         } catch (GitAPIException e) {
             throw new RuntimeException("Failed to perform Git operation: " + e.getMessage(), e);
         } finally {
