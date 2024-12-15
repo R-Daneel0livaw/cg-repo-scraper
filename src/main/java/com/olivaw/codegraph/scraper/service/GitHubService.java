@@ -12,13 +12,13 @@ public class GitHubService implements VersionControlService {
     @Override
     public void fetchLatestFiles(VersionControlRequest request) {
         var config = getGitActionConfig(request, 1);
-        GitUtils.performGitAction(config);
+        GitActionResult<List<File>> result = GitUtils.performGitAction(config);
     }
 
     @Override
     public void fetchFullHistory(VersionControlRequest request) {
         var config = getGitActionConfig(request);
-        GitUtils.performGitAction(config);
+        GitActionResult<List<File>> result = GitUtils.performGitAction(config);
     }
 
     @Override

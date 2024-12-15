@@ -3,7 +3,6 @@ package com.olivaw.codegraph.scraper.utils;
 import com.olivaw.codegraph.scraper.model.GitActionConfig;
 import com.olivaw.codegraph.scraper.model.GitActionResult;
 import com.olivaw.codegraph.scraper.service.FetchAllFilesAction;
-import com.olivaw.codegraph.scraper.service.FetchHistoryBetweenDatesAction;
 import com.olivaw.codegraph.scraper.service.GitAction;
 import org.eclipse.jgit.api.CloneCommand;
 import org.eclipse.jgit.api.Git;
