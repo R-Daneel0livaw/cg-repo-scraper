@@ -32,13 +32,8 @@ public class GitHubService implements VersionControlService {
     @Override
     public String fetchDiff(VersionControlRequest request) {
         var config = getGitActionConfig(request, 1);
-        GitActionResult<List<File>> result = GitUtils.performGitAction(config, git -> {
-            File[] files = git.getRepository().getWorkTree().listFiles();
-            if (files == null) {
-                throw new RuntimeException("No files found in repository.");
-            }
-            return new GitActionResult<>(List.of(files));
-        });
+        GitAction<List<File>> action = new FetchDiffFilesAction(null, null);
+        GitActionResult<List<File>> result = GitUtils.performGitAction(config, action);
         return null;
     }
 
