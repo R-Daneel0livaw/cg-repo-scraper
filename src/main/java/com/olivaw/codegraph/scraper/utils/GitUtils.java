@@ -2,6 +2,8 @@ package com.olivaw.codegraph.scraper.utils;
 
 import com.olivaw.codegraph.scraper.model.GitActionConfig;
 import com.olivaw.codegraph.scraper.model.GitActionResult;
+import com.olivaw.codegraph.scraper.service.FetchAllFilesAction;
+import com.olivaw.codegraph.scraper.service.FetchHistoryBetweenDatesAction;
 import com.olivaw.codegraph.scraper.service.GitAction;
 import org.eclipse.jgit.api.CloneCommand;
 import org.eclipse.jgit.api.Git;
@@ -12,13 +14,16 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Comparator;
+import java.util.List;
 
 public class GitUtils {
 
-    public static <T> GitActionResult<T> performGitAction(GitActionConfig config, GitAction<T> action) {
+    public static GitActionResult<List<File>> performGitAction(GitActionConfig config) {
         var cloneCommand = getCloneCommand(config);
+        GitAction<List<File>> action = new FetchAllFilesAction(null);
 
         try (var git = cloneCommand.call()) {
+            System.out.println("Repository cloned successfully to: " + config.getTargetDirectory().getAbsolutePath());
             return action.execute(git);
         } catch (GitAPIException e) {
             throw new RuntimeException("Failed to perform Git operation: " + e.getMessage(), e);
@@ -27,11 +32,11 @@ public class GitUtils {
         }
     }
 
-    public static void performGitAction(GitActionConfig config) {
+    public static <T> GitActionResult<T> performGitAction(GitActionConfig config, GitAction<T> action) {
         var cloneCommand = getCloneCommand(config);
 
         try (var git = cloneCommand.call()) {
-            System.out.println("Repository cloned successfully to: " + config.getTargetDirectory().getAbsolutePath());
+            return action.execute(git);
         } catch (GitAPIException e) {
             throw new RuntimeException("Failed to perform Git operation: " + e.getMessage(), e);
         } finally {
