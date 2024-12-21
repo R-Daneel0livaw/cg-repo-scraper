@@ -1,5 +1,6 @@
 package com.olivaw.codegraph.scraper.service;
 
+import com.olivaw.codegraph.scraper.exception.GitActionException;
 import com.olivaw.codegraph.scraper.model.GitActionResult;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
@@ -27,7 +28,7 @@ public class FetchDiffFilesAction implements GitAction<List<File>> {
     }
 
     @Override
-    public GitActionResult<List<File>> execute(Git git) throws GitAPIException {
+    public GitActionResult<List<File>> execute(Git git) throws GitActionException {
         List<File> changedFiles = new ArrayList<>();
         Repository repository = git.getRepository();
 
@@ -37,11 +38,11 @@ public class FetchDiffFilesAction implements GitAction<List<File>> {
             startCommitObj = repository.resolve(startCommitId);
             endCommitObj = repository.resolve(endCommitId);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new GitActionException("Error fetching start or end commit from repository.", e);
         }
 
         if (startCommitObj == null || endCommitObj == null) {
-            throw new IllegalArgumentException("Invalid commit IDs provided.");
+            throw new GitActionException("Invalid commit IDs provided.");
         }
 
         try (RevWalk revWalk = new RevWalk(repository)) {
@@ -61,7 +62,7 @@ public class FetchDiffFilesAction implements GitAction<List<File>> {
                 }
             }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new GitActionException("Error fetching diffs in repository commit history.", e);
         }
         return new GitActionResult<>(changedFiles);
     }

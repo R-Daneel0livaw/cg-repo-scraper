@@ -1,5 +1,6 @@
 package com.olivaw.codegraph.scraper.service;
 
+import com.olivaw.codegraph.scraper.exception.GitActionException;
 import com.olivaw.codegraph.scraper.model.GitActionResult;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
@@ -26,15 +27,15 @@ public class FetchHistoryBetweenDatesAction implements GitAction<List<File>> {
     }
 
     @Override
-    public GitActionResult<List<File>> execute(Git git) throws GitAPIException {
+    public GitActionResult<List<File>> execute(Git git) throws GitActionException {
         List<File> changedFiles = new ArrayList<>();
 
         Repository repository = git.getRepository();
         Iterable<RevCommit> commits;
         try {
             commits = git.log().all().call();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (IOException | GitAPIException e) {
+            throw new GitActionException("Error fetching starting commits in repository.", e);
         }
 
         RevCommit previousCommit = null;
@@ -56,7 +57,7 @@ public class FetchHistoryBetweenDatesAction implements GitAction<List<File>> {
                         changedFiles.add(new File(filePath));
                     }
                 } catch (IOException e) {
-                    throw new RuntimeException(e);
+                    throw new GitActionException("Error fetching files in repository commit history.", e);
                 }
             }
             previousCommit = commit;

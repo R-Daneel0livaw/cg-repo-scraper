@@ -1,5 +1,6 @@
 package com.olivaw.codegraph.scraper.service;
 
+import com.olivaw.codegraph.scraper.exception.GitActionException;
 import com.olivaw.codegraph.scraper.model.GitActionResult;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
@@ -23,7 +24,7 @@ public class FetchAllFilesAction implements GitAction<List<File>> {
     }
 
     @Override
-    public GitActionResult<List<File>> execute(Git git) throws GitAPIException {
+    public GitActionResult<List<File>> execute(Git git) throws GitActionException {
         List<File> files = new ArrayList<>();
         Repository repository = git.getRepository();
 
@@ -33,11 +34,11 @@ public class FetchAllFilesAction implements GitAction<List<File>> {
                     ? repository.resolve(commitId)
                     : repository.resolve("HEAD");
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new GitActionException("Error fetching starting commit id from repository.", e);
         }
 
         if (resolvedCommitId == null) {
-            throw new IllegalArgumentException("Invalid commit ID or branch reference.");
+            throw new GitActionException("Invalid commit ID or branch reference.");
         }
 
         try (RevWalk revWalk = new RevWalk(repository)) {
@@ -53,7 +54,7 @@ public class FetchAllFilesAction implements GitAction<List<File>> {
                 }
             }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new GitActionException("Error fetching all files from repository.", e);
         }
         return new GitActionResult<>(files);
     }
