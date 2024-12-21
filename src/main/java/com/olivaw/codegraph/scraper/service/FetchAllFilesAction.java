@@ -3,7 +3,6 @@ package com.olivaw.codegraph.scraper.service;
 import com.olivaw.codegraph.scraper.exception.GitActionException;
 import com.olivaw.codegraph.scraper.model.GitActionResult;
 import org.eclipse.jgit.api.Git;
-import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
