@@ -1,4 +1,4 @@
-package com.olivaw.codegraph.scraper.service;
+package com.olivaw.codegraph.scraper.service.retrieval;
 
 public class VersionControlServiceFactory {
 

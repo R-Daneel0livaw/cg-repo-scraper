@@ -1,4 +1,4 @@
-package com.olivaw.codegraph.scraper.service;
+package com.olivaw.codegraph.scraper.service.retrieval;
 
 import com.olivaw.codegraph.scraper.model.GitActionConfig;
 import com.olivaw.codegraph.scraper.model.GitActionResult;

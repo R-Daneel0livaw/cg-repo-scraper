@@ -1,7 +1,7 @@
 package com.olivaw.codegraph.scraper.controller;
 
 import com.olivaw.codegraph.scraper.model.request.VersionControlRequest;
-import com.olivaw.codegraph.scraper.service.VersionControlServiceFactory;
+import com.olivaw.codegraph.scraper.service.retrieval.VersionControlServiceFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
