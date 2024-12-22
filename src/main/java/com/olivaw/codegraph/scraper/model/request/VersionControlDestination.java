@@ -3,9 +3,19 @@ package com.olivaw.codegraph.scraper.model.request;
 public class VersionControlDestination {
 
     private ResultDestinationType destinationType;
+
+    private boolean maintainDirectoryStructure;
     private String localPath;
     private String s3BucketName;
     private String s3Key;
+
+    public boolean isMaintainDirectoryStructure() {
+        return maintainDirectoryStructure;
+    }
+
+    public void setMaintainDirectoryStructure(boolean maintainDirectoryStructure) {
+        this.maintainDirectoryStructure = maintainDirectoryStructure;
+    }
 
     public ResultDestinationType getDestinationType() {
         return destinationType;
