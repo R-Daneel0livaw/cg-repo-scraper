@@ -1,6 +1,6 @@
 package com.olivaw.codegraph.scraper.service;
 
-import com.olivaw.codegraph.scraper.model.VersionControlRequest;
+import com.olivaw.codegraph.scraper.model.request.VersionControlRequest;
 
 import java.util.List;
 

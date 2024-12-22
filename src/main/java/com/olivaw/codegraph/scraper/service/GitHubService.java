@@ -2,7 +2,7 @@ package com.olivaw.codegraph.scraper.service;
 
 import com.olivaw.codegraph.scraper.model.GitActionConfig;
 import com.olivaw.codegraph.scraper.model.GitActionResult;
-import com.olivaw.codegraph.scraper.model.VersionControlRequest;
+import com.olivaw.codegraph.scraper.model.request.VersionControlRequest;
 import com.olivaw.codegraph.scraper.utils.GitUtils;
 
 import java.io.File;
@@ -39,14 +39,14 @@ public class GitHubService implements VersionControlService {
 
     private GitActionConfig getGitActionConfig(VersionControlRequest request) {
         var config = new GitActionConfig();
-        config.setRepoLocation(request.getRepoLocation());
+        config.setRepoLocation(request.getVersionControlRepoIdentification().getRepoLocation());
         config.setTargetDirectory(new File("/tmp/temp-repo"));
         return config;
     }
 
     private GitActionConfig getGitActionConfig(VersionControlRequest request, int depth) {
         var config = new GitActionConfig();
-        config.setRepoLocation(request.getRepoLocation());
+        config.setRepoLocation(request.getVersionControlRepoIdentification().getRepoLocation());
         config.setTargetDirectory(new File("/tmp/temp-repo"));
         config.setDepth(depth);
         return config;

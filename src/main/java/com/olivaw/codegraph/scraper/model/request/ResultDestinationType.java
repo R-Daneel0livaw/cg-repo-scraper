@@ -1,4 +1,4 @@
-package com.olivaw.codegraph.scraper.model;
+package com.olivaw.codegraph.scraper.model.request;
 
 public enum ResultDestinationType {
 
