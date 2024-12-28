@@ -1,13 +1,15 @@
 package com.olivaw.codegraph.scraper.service.storage;
 
+import com.olivaw.codegraph.scraper.model.request.ResultDestinationType;
+
 public class StorageServiceFactory {
 
-    public static StorageService getService(String storageType) {
-        return switch (storageType.toLowerCase()) {
-            case "local" -> new LocalFileSystemStorageService();
-            case "s3" -> new S3StorageService();
+    public static StorageService getService(ResultDestinationType storageType) {
+        return switch (storageType) {
+            case LOCAL_STORAGE -> new LocalFileSystemStorageService();
+            case EXTERNAL_STORAGE -> new S3StorageService();
 //                    new S3StorageService(AwsClientProvider.getS3Client(), "bucket-name");
-            default -> throw new IllegalArgumentException("Unsupported storage type: " + storageType);
+            case API_RESPONSE -> new APIResponseStorageService();
         };
     }
 }
