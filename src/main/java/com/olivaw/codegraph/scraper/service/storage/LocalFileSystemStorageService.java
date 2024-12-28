@@ -20,6 +20,15 @@ public class LocalFileSystemStorageService implements StorageService {
     }
 
     @Override
+    public byte[] retrieve(String targetPath) throws StorageException {
+        try {
+            return Files.readAllBytes(Paths.get(targetPath));
+        } catch (IOException e) {
+            throw new StorageException("Failed to retrieve data from local storage at " + targetPath, e);
+        }
+    }
+
+    @Override
     public void delete(String targetPath) throws StorageException {
         try {
             Files.deleteIfExists(Paths.get(targetPath));
