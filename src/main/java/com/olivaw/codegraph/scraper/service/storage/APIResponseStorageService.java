@@ -1,21 +1,17 @@
 package com.olivaw.codegraph.scraper.service.storage;
 
 import com.olivaw.codegraph.scraper.exception.StorageException;
-
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.List;
+import com.olivaw.codegraph.scraper.model.StorageData;
+import com.olivaw.codegraph.scraper.model.StorageResult;
 
 public class APIResponseStorageService implements StorageService {
     @Override
-    public void store(String targetPath, byte[] data) throws StorageException {
+    public StorageResult store(StorageData storageData) throws StorageException {
         throw new UnsupportedOperationException("Store operation is not applicable for API Response Storage.");
     }
 
     @Override
-    public byte[] retrieve(String targetPath) throws StorageException {
+    public StorageResult retrieve(StorageData storageData) throws StorageException {
 //        List<FileData> apiResponseData = new ArrayList<>();
 //        for (File file : files) {
 //            try {
@@ -30,25 +26,7 @@ public class APIResponseStorageService implements StorageService {
     }
 
     @Override
-    public void delete(String targetPath) throws StorageException {
+    public StorageResult delete(StorageData storageData) throws StorageException {
         throw new UnsupportedOperationException("Delete operation is not applicable for API Response Storage.");
-    }
-
-    public static class FileData {
-        private final String fileName;
-        private final byte[] data;
-
-        public FileData(String fileName, byte[] data) {
-            this.fileName = fileName;
-            this.data = data;
-        }
-
-        public String getFileName() {
-            return fileName;
-        }
-
-        public byte[] getData() {
-            return data;
-        }
     }
 }

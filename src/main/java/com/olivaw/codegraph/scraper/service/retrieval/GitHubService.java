@@ -2,6 +2,7 @@ package com.olivaw.codegraph.scraper.service.retrieval;
 
 import com.olivaw.codegraph.scraper.model.GitActionConfig;
 import com.olivaw.codegraph.scraper.model.GitActionResult;
+import com.olivaw.codegraph.scraper.model.StorageData;
 import com.olivaw.codegraph.scraper.model.request.VersionControlRequest;
 import com.olivaw.codegraph.scraper.service.storage.StorageService;
 import com.olivaw.codegraph.scraper.service.storage.StorageServiceFactory;
@@ -17,7 +18,7 @@ public class GitHubService implements VersionControlService {
         GitActionResult<List<File>> result = GitUtils.performGitAction(config);
         StorageService storageService = StorageServiceFactory.getService(request.getVersionControlDestination()
                 .getDestinationType());
-        storageService.store(null, null);
+        storageService.store(new StorageData(request.getVersionControlDestination().getLocalPath(), result.getData()));
 
     }
 
@@ -27,7 +28,7 @@ public class GitHubService implements VersionControlService {
         GitActionResult<List<File>> result = GitUtils.performGitAction(config);
         StorageService storageService = StorageServiceFactory.getService(request.getVersionControlDestination()
                 .getDestinationType());
-        storageService.store(null, null);
+        storageService.store((new StorageData(request.getVersionControlDestination().getLocalPath(), result.getData())));
     }
 
     @Override
@@ -37,7 +38,7 @@ public class GitHubService implements VersionControlService {
         GitActionResult<List<File>> result = GitUtils.performGitAction(config, action);
         StorageService storageService = StorageServiceFactory.getService(request.getVersionControlDestination()
                 .getDestinationType());
-        storageService.store(null, null);
+        storageService.store((new StorageData(request.getVersionControlDestination().getLocalPath(), result.getData())));
         return null;
     }
 
@@ -48,7 +49,7 @@ public class GitHubService implements VersionControlService {
         GitActionResult<List<File>> result = GitUtils.performGitAction(config, action);
         StorageService storageService = StorageServiceFactory.getService(request.getVersionControlDestination()
                 .getDestinationType());
-        storageService.store(null, null);
+        storageService.store((new StorageData(request.getVersionControlDestination().getLocalPath(), result.getData())));
         return null;
     }
 

@@ -1,6 +1,8 @@
 package com.olivaw.codegraph.scraper.service.storage;
 
 import com.olivaw.codegraph.scraper.exception.StorageException;
+import com.olivaw.codegraph.scraper.model.StorageData;
+import com.olivaw.codegraph.scraper.model.StorageResult;
 
 public class S3StorageService implements StorageService {
 
@@ -13,7 +15,7 @@ public class S3StorageService implements StorageService {
 //    }
 
     @Override
-    public void store(String targetPath, byte[] data) throws StorageException {
+    public StorageResult store(StorageData storageData) throws StorageException {
 //        try {
 //            s3Client.putObject(
 //                    PutObjectRequest.builder()
@@ -26,10 +28,11 @@ public class S3StorageService implements StorageService {
 //        } catch (Exception e) {
 //            throw new StorageException("Failed to store data to S3 at " + targetPath, e);
 //        }
+        return null;
     }
 
     @Override
-    public byte[] retrieve(String targetPath) throws StorageException {
+    public StorageResult retrieve(StorageData storageData) throws StorageException {
 //        try {
 //            var response = s3Client.getObject(
 //                    GetObjectRequest.builder()
@@ -45,7 +48,7 @@ public class S3StorageService implements StorageService {
     }
 
     @Override
-    public void delete(String targetPath) throws StorageException {
+    public StorageResult delete(StorageData storageData) throws StorageException {
 //        try {
 //            s3Client.deleteObject(
 //                    DeleteObjectRequest.builder()
@@ -56,5 +59,6 @@ public class S3StorageService implements StorageService {
 //        } catch (Exception e) {
 //            throw new StorageException("Failed to delete data from S3 at " + targetPath, e);
 //        }
+        return null;
     }
 }

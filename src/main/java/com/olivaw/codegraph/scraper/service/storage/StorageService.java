@@ -1,12 +1,14 @@
 package com.olivaw.codegraph.scraper.service.storage;
 
 import com.olivaw.codegraph.scraper.exception.StorageException;
+import com.olivaw.codegraph.scraper.model.StorageData;
+import com.olivaw.codegraph.scraper.model.StorageResult;
 
 public interface StorageService {
 
-    void store(String targetPath, byte[] data) throws StorageException;
+    StorageResult store(StorageData storageData) throws StorageException;
 
-    byte[] retrieve(String targetPath) throws StorageException;
+    StorageResult retrieve(StorageData storageData) throws StorageException;
 
-    void delete(String targetPath) throws StorageException;
+    StorageResult delete(StorageData storageData) throws StorageException;
 }
