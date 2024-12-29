@@ -16,18 +16,15 @@ public class GitHubService implements VersionControlService {
     public void fetchLatestFiles(VersionControlRequest request) {
         var config = getGitActionConfig(request, 1);
         GitActionResult<List<File>> result = GitUtils.performGitAction(config);
-        StorageService storageService = StorageServiceFactory.getService(request.getVersionControlDestination()
-                .getDestinationType());
+        var storageService = getStorageService(request);
         storageService.store(new StorageData(request.getVersionControlDestination().getLocalPath(), result.getData()));
-
     }
 
     @Override
     public void fetchFullHistory(VersionControlRequest request) {
         var config = getGitActionConfig(request);
         GitActionResult<List<File>> result = GitUtils.performGitAction(config);
-        StorageService storageService = StorageServiceFactory.getService(request.getVersionControlDestination()
-                .getDestinationType());
+        var storageService = getStorageService(request);
         storageService.store((new StorageData(request.getVersionControlDestination().getLocalPath(), result.getData())));
     }
 
@@ -36,8 +33,7 @@ public class GitHubService implements VersionControlService {
         var config = getGitActionConfig(request);
         GitAction<List<File>> action = new FetchHistoryBetweenDatesAction(null, null);
         GitActionResult<List<File>> result = GitUtils.performGitAction(config, action);
-        StorageService storageService = StorageServiceFactory.getService(request.getVersionControlDestination()
-                .getDestinationType());
+        var storageService = getStorageService(request);
         storageService.store((new StorageData(request.getVersionControlDestination().getLocalPath(), result.getData())));
         return null;
     }
@@ -47,8 +43,7 @@ public class GitHubService implements VersionControlService {
         var config = getGitActionConfig(request, 1);
         GitAction<List<File>> action = new FetchDiffFilesAction(null, null);
         GitActionResult<List<File>> result = GitUtils.performGitAction(config, action);
-        StorageService storageService = StorageServiceFactory.getService(request.getVersionControlDestination()
-                .getDestinationType());
+        var storageService = getStorageService(request);
         storageService.store((new StorageData(request.getVersionControlDestination().getLocalPath(), result.getData())));
         return null;
     }
@@ -66,5 +61,9 @@ public class GitHubService implements VersionControlService {
         config.setTargetDirectory(new File("/tmp/temp-repo"));
         config.setDepth(depth);
         return config;
+    }
+
+    private StorageService getStorageService(VersionControlRequest request) {
+        return StorageServiceFactory.getService(request.getVersionControlDestination().getDestinationType());
     }
 }

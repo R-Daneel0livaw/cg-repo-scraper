@@ -1,6 +1,7 @@
 package com.olivaw.codegraph.scraper.controller;
 
 import com.olivaw.codegraph.scraper.model.request.VersionControlRequest;
+import com.olivaw.codegraph.scraper.service.retrieval.VersionControlService;
 import com.olivaw.codegraph.scraper.service.retrieval.VersionControlServiceFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,8 +18,7 @@ public class VersionControlController {
     @PostMapping("/latest")
     public ResponseEntity<String> fetchLatestFiles(@RequestBody VersionControlRequest request) {
         try {
-            var service = VersionControlServiceFactory.getService(request.getVersionControlRepoIdentification()
-                    .getRepoLocation());
+            var service = getVersionControlService(request);
             service.fetchLatestFiles(request);
             return ResponseEntity.ok("Fetched latest files successfully.");
         } catch (Exception e) {
@@ -29,8 +29,7 @@ public class VersionControlController {
     @PostMapping("/history/full")
     public ResponseEntity<String> fetchFullHistory(@RequestBody VersionControlRequest request) {
         try {
-            var service = VersionControlServiceFactory.getService(request.getVersionControlRepoIdentification()
-                    .getRepoLocation());
+            var service = getVersionControlService(request);
             service.fetchLatestFiles(request);
             return ResponseEntity.ok("Fetched full history successfully.");
         } catch (Exception e) {
@@ -54,5 +53,9 @@ public class VersionControlController {
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error: " + e.getMessage());
         }
+    }
+
+    private VersionControlService getVersionControlService(VersionControlRequest request) {
+        return VersionControlServiceFactory.getService(request.getVersionControlRepoIdentification().getRepoLocation());
     }
 }
