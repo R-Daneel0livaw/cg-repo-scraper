@@ -7,22 +7,12 @@ import com.olivaw.codegraph.scraper.model.StorageResult;
 public class APIResponseStorageService implements StorageService {
     @Override
     public StorageResult store(StorageData storageData) throws StorageException {
-        throw new UnsupportedOperationException("Store operation is not applicable for API Response Storage.");
+       return new StorageResult("Files successfully retrieved", storageData.getFiles());
     }
 
     @Override
     public StorageResult retrieve(StorageData storageData) throws StorageException {
-//        List<FileData> apiResponseData = new ArrayList<>();
-//        for (File file : files) {
-//            try {
-//                byte[] fileData = Files.readAllBytes(file.toPath());
-//                apiResponseData.add(new FileData(file.getName(), fileData));
-//            } catch (IOException e) {
-//                throw new StorageException("Failed to read file: " + file.getAbsolutePath(), e);
-//            }
-//        }
-//        return apiResponseData;
-        return null;
+        return store(storageData);
     }
 
     @Override

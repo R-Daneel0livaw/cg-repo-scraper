@@ -17,6 +17,11 @@ public class StorageResult {
         this.location = location;
     }
 
+    public StorageResult(String message, List<File> files) {
+        this.message = message;
+        this.files = files;
+    }
+
     public StorageResult(String message, String location, List<File> files) {
         this.message = message;
         this.location = location;
