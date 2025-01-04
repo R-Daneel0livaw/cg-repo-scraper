@@ -13,24 +13,15 @@ import java.io.File;
 import java.util.List;
 
 public class GitHubService implements VersionControlService {
+
     @Override
     public VersionControlResponse<List<File>> fetchLatestFiles(VersionControlRequest request) {
-        var config = getGitActionConfig(request, 1);
-        GitActionResult<List<File>> result = GitUtils.performGitAction(config);
-        var storageService = getStorageService(request);
-        var storageResult = storageService.store(new StorageData(request.getVersionControlDestination().getLocalPath(),
-                result.getData()));
-        return new VersionControlResponse<>(storageResult.getMessage(), storageResult.getFiles());
+        return fetchFilesAndStore(request, 1);
     }
 
     @Override
     public  VersionControlResponse<List<File>>  fetchFullHistory(VersionControlRequest request) {
-        var config = getGitActionConfig(request);
-        GitActionResult<List<File>> result = GitUtils.performGitAction(config);
-        var storageService = getStorageService(request);
-        var storageResult = storageService.store((new StorageData(request.getVersionControlDestination().getLocalPath(),
-                result.getData())));
-        return new VersionControlResponse<>(storageResult.getMessage(), storageResult.getFiles());
+        return fetchFilesAndStore(request, 0);
     }
 
     @Override
@@ -51,6 +42,14 @@ public class GitHubService implements VersionControlService {
         var storageService = getStorageService(request);
         storageService.store((new StorageData(request.getVersionControlDestination().getLocalPath(), result.getData())));
         return null;
+    }
+
+    private VersionControlResponse<List<File>> fetchFilesAndStore(VersionControlRequest request, int depth) {
+        var config = getGitActionConfig(request, depth);
+        GitActionResult<List<File>> result = GitUtils.performGitAction(config);
+        var storageService = getStorageService(request);
+        var storageResult = storageService.store(new StorageData(request.getVersionControlDestination().getLocalPath(), result.getData()));
+        return new VersionControlResponse<>(storageResult.getMessage(), storageResult.getFiles());
     }
 
     private GitActionConfig getGitActionConfig(VersionControlRequest request) {
