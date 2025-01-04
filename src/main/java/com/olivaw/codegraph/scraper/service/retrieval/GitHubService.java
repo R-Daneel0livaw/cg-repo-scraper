@@ -3,6 +3,7 @@ package com.olivaw.codegraph.scraper.service.retrieval;
 import com.olivaw.codegraph.scraper.model.GitActionConfig;
 import com.olivaw.codegraph.scraper.model.GitActionResult;
 import com.olivaw.codegraph.scraper.model.StorageData;
+import com.olivaw.codegraph.scraper.model.VersionControlResponse;
 import com.olivaw.codegraph.scraper.model.request.VersionControlRequest;
 import com.olivaw.codegraph.scraper.service.storage.StorageService;
 import com.olivaw.codegraph.scraper.service.storage.StorageServiceFactory;
@@ -13,19 +14,23 @@ import java.util.List;
 
 public class GitHubService implements VersionControlService {
     @Override
-    public void fetchLatestFiles(VersionControlRequest request) {
+    public VersionControlResponse<List<File>> fetchLatestFiles(VersionControlRequest request) {
         var config = getGitActionConfig(request, 1);
         GitActionResult<List<File>> result = GitUtils.performGitAction(config);
         var storageService = getStorageService(request);
-        storageService.store(new StorageData(request.getVersionControlDestination().getLocalPath(), result.getData()));
+        var storageResult = storageService.store(new StorageData(request.getVersionControlDestination().getLocalPath(),
+                result.getData()));
+        return new VersionControlResponse<>(storageResult.getMessage(), storageResult.getFiles());
     }
 
     @Override
-    public void fetchFullHistory(VersionControlRequest request) {
+    public  VersionControlResponse<List<File>>  fetchFullHistory(VersionControlRequest request) {
         var config = getGitActionConfig(request);
         GitActionResult<List<File>> result = GitUtils.performGitAction(config);
         var storageService = getStorageService(request);
-        storageService.store((new StorageData(request.getVersionControlDestination().getLocalPath(), result.getData())));
+        var storageResult = storageService.store((new StorageData(request.getVersionControlDestination().getLocalPath(),
+                result.getData())));
+        return new VersionControlResponse<>(storageResult.getMessage(), storageResult.getFiles());
     }
 
     @Override
