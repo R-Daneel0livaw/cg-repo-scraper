@@ -16,24 +16,24 @@ import java.util.List;
 public class VersionControlController {
 
     @PostMapping("/latest")
-    public ResponseEntity<String> fetchLatestFiles(@RequestBody VersionControlRequest request) {
+    public ResponseEntity<?> fetchLatestFiles(@RequestBody VersionControlRequest request) {
         try {
             var service = getVersionControlService(request);
-            service.fetchLatestFiles(request);
-            return ResponseEntity.ok("Fetched latest files successfully.");
+            var response = service.fetchLatestFiles(request);
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
-            return ResponseEntity.status(500).body("Error: " + e.getMessage());
+            return ResponseEntity.status(500).body("An unexpected error occurred");
         }
     }
 
     @PostMapping("/history/full")
-    public ResponseEntity<String> fetchFullHistory(@RequestBody VersionControlRequest request) {
+    public ResponseEntity<?> fetchFullHistory(@RequestBody VersionControlRequest request) {
         try {
             var service = getVersionControlService(request);
-            service.fetchLatestFiles(request);
-            return ResponseEntity.ok("Fetched full history successfully.");
+            var response = service.fetchLatestFiles(request);
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
-            return ResponseEntity.status(500).body("Error: " + e.getMessage());
+            return ResponseEntity.status(500).body("An unexpected error occurred");
         }
     }
 
