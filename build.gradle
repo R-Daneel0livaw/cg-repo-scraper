@@ -28,6 +28,7 @@ dependencies {
 	implementation 'org.eclipse.jgit:org.eclipse.jgit.ssh.jsch:7.0.0.202409031743-r'
 	implementation 'org.eclipse.jgit:org.eclipse.jgit.ssh.apache:7.0.0.202409031743-r'
 	implementation 'org.tukaani:xz:1.9'
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
