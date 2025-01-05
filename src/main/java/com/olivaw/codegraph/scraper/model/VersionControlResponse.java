@@ -7,7 +7,6 @@ public class VersionControlResponse {
 
     public VersionControlResponse(String message) {
         this.message = message;
-        this.versionControlData = new VersionControlData();
     }
 
     public VersionControlResponse(String message, VersionControlData versionControlData) {
