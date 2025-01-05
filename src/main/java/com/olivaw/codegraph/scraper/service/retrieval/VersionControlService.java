@@ -7,11 +7,11 @@ import java.io.File;
 import java.util.List;
 
 public interface VersionControlService {
-    VersionControlResponse<List<File>> fetchLatestFiles(VersionControlRequest request) throws Exception;
+    VersionControlResponse fetchLatestFiles(VersionControlRequest request) throws Exception;
 
-    VersionControlResponse<List<File>> fetchFullHistory(VersionControlRequest request) throws Exception;
+    VersionControlResponse fetchFullHistory(VersionControlRequest request) throws Exception;
 
-    List<String> fetchHistoryBetweenDates(VersionControlRequest request) throws Exception;
+    VersionControlResponse fetchHistoryBetweenDates(VersionControlRequest request) throws Exception;
 
-    String fetchDiff(VersionControlRequest request) throws Exception;
+    VersionControlResponse fetchDiff(VersionControlRequest request) throws Exception;
 }

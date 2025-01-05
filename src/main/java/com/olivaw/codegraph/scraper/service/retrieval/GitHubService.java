@@ -1,10 +1,8 @@
 package com.olivaw.codegraph.scraper.service.retrieval;
 
-import com.olivaw.codegraph.scraper.model.GitActionConfig;
-import com.olivaw.codegraph.scraper.model.GitActionResult;
-import com.olivaw.codegraph.scraper.model.StorageData;
-import com.olivaw.codegraph.scraper.model.VersionControlResponse;
+import com.olivaw.codegraph.scraper.model.*;
 import com.olivaw.codegraph.scraper.model.request.VersionControlRequest;
+import com.olivaw.codegraph.scraper.service.VersionControlResponseBuilder;
 import com.olivaw.codegraph.scraper.service.storage.StorageService;
 import com.olivaw.codegraph.scraper.service.storage.StorageServiceFactory;
 import com.olivaw.codegraph.scraper.utils.GitUtils;
@@ -15,41 +13,38 @@ import java.util.List;
 public class GitHubService implements VersionControlService {
 
     @Override
-    public VersionControlResponse<List<File>> fetchLatestFiles(VersionControlRequest request) {
-        return fetchFilesAndStore(request, 1);
+    public VersionControlResponse fetchLatestFiles(VersionControlRequest request) {
+        return fetchResultAndStore(request, 1);
     }
 
     @Override
-    public  VersionControlResponse<List<File>>  fetchFullHistory(VersionControlRequest request) {
-        return fetchFilesAndStore(request, 0);
+    public  VersionControlResponse  fetchFullHistory(VersionControlRequest request) {
+        return fetchResultAndStore(request, 0);
     }
 
     @Override
-    public List<String> fetchHistoryBetweenDates(VersionControlRequest request) {
+    public VersionControlResponse fetchHistoryBetweenDates(VersionControlRequest request) {
         var config = getGitActionConfig(request);
         GitAction<List<File>> action = new FetchHistoryBetweenDatesAction(null, null);
         GitActionResult<List<File>> result = GitUtils.performGitAction(config, action);
-        var storageService = getStorageService(request);
-        storageService.store((new StorageData(request.getVersionControlDestination().getLocalPath(), result.getData())));
-        return null;
+        var storageResult = storeData(request, result);
+        return getVersionControlResponse(storageResult);
     }
 
     @Override
-    public String fetchDiff(VersionControlRequest request) {
+    public VersionControlResponse fetchDiff(VersionControlRequest request) {
         var config = getGitActionConfig(request, 1);
         GitAction<List<File>> action = new FetchDiffFilesAction(null, null);
         GitActionResult<List<File>> result = GitUtils.performGitAction(config, action);
-        var storageService = getStorageService(request);
-        storageService.store((new StorageData(request.getVersionControlDestination().getLocalPath(), result.getData())));
-        return null;
+        var storageResult = storeData(request, result);
+        return getVersionControlResponse(storageResult);
     }
 
-    private VersionControlResponse<List<File>> fetchFilesAndStore(VersionControlRequest request, int depth) {
+    private VersionControlResponse fetchResultAndStore(VersionControlRequest request, int depth) {
         var config = getGitActionConfig(request, depth);
         GitActionResult<List<File>> result = GitUtils.performGitAction(config);
-        var storageService = getStorageService(request);
-        var storageResult = storageService.store(new StorageData(request.getVersionControlDestination().getLocalPath(), result.getData()));
-        return new VersionControlResponse<>(storageResult.getMessage(), storageResult.getFiles());
+        var storageResult = storeData(request, result);
+        return getVersionControlResponse(storageResult);
     }
 
     private GitActionConfig getGitActionConfig(VersionControlRequest request) {
@@ -69,5 +64,16 @@ public class GitHubService implements VersionControlService {
 
     private StorageService getStorageService(VersionControlRequest request) {
         return StorageServiceFactory.getService(request.getVersionControlDestination().getDestinationType());
+    }
+
+    private StorageResult storeData(VersionControlRequest versionControlRequest, GitActionResult<List<File>> gitActionResult) {
+        var storageService = getStorageService(versionControlRequest);
+        return storageService.store(new StorageData(versionControlRequest.getVersionControlDestination().getLocalPath(),
+                gitActionResult.getData()));
+
+    }
+
+    private VersionControlResponse getVersionControlResponse(StorageResult storageResult) {
+        return VersionControlResponseBuilder.build(storageResult.getMessage(), storageResult.getLocation(), storageResult.getFiles());
     }
 }

@@ -8,22 +8,22 @@ import java.util.List;
 
 public class LocalFileSystemService implements VersionControlService {
     @Override
-    public VersionControlResponse<List<File>> fetchLatestFiles(VersionControlRequest request) throws Exception {
+    public VersionControlResponse fetchLatestFiles(VersionControlRequest request) throws Exception {
         return null;
     }
 
     @Override
-    public VersionControlResponse<List<File>> fetchFullHistory(VersionControlRequest request) throws Exception {
+    public VersionControlResponse fetchFullHistory(VersionControlRequest request) throws Exception {
         return null;
     }
 
     @Override
-    public List<String> fetchHistoryBetweenDates(VersionControlRequest request) throws Exception {
+    public VersionControlResponse fetchHistoryBetweenDates(VersionControlRequest request) throws Exception {
         return null;
     }
 
     @Override
-    public String fetchDiff(VersionControlRequest request) throws Exception {
+    public VersionControlResponse fetchDiff(VersionControlRequest request) throws Exception {
         return null;
     }
 }
