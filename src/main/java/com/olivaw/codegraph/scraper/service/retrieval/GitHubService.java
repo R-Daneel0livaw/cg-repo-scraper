@@ -74,6 +74,7 @@ public class GitHubService implements VersionControlService {
         var storageService = getStorageService(versionControlRequest);
         return storageService.store(new StorageData(versionControlRequest.getVersionControlDestination().getLocalPath(),
                 gitActionResult.getData()));
+        // Need to determine how we can make getStorageService and storeData and storageService.store all using the same type.
 
     }
 
