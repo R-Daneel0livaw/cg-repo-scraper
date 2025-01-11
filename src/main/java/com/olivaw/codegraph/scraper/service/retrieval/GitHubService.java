@@ -6,10 +6,14 @@ import com.olivaw.codegraph.scraper.service.VersionControlResponseBuilder;
 import com.olivaw.codegraph.scraper.service.storage.StorageService;
 import com.olivaw.codegraph.scraper.service.storage.StorageServiceFactory;
 import com.olivaw.codegraph.scraper.utils.GitUtils;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.util.List;
 
+@Service
+@Qualifier("gitHubService")
 public class GitHubService implements VersionControlService {
 
     @Override
