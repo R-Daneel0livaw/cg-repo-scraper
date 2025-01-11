@@ -3,8 +3,12 @@ package com.olivaw.codegraph.scraper.service.storage;
 import com.olivaw.codegraph.scraper.exception.StorageException;
 import com.olivaw.codegraph.scraper.model.StorageData;
 import com.olivaw.codegraph.scraper.model.StorageResult;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
 
-public class S3StorageService implements StorageService {
+@Service
+@Qualifier("s3StorageService")
+public class S3StorageService implements StorageService<Void> {
 
 //    private final S3Client s3Client;
 //    private final String bucketName;
@@ -15,7 +19,7 @@ public class S3StorageService implements StorageService {
 //    }
 
     @Override
-    public StorageResult store(StorageData storageData) throws StorageException {
+    public StorageResult store(StorageData<Void> storageData) throws StorageException {
 //        try {
 //            s3Client.putObject(
 //                    PutObjectRequest.builder()
@@ -32,7 +36,7 @@ public class S3StorageService implements StorageService {
     }
 
     @Override
-    public StorageResult retrieve(StorageData storageData) throws StorageException {
+    public StorageResult retrieve(StorageData<Void> storageData) throws StorageException {
 //        try {
 //            var response = s3Client.getObject(
 //                    GetObjectRequest.builder()
@@ -48,7 +52,7 @@ public class S3StorageService implements StorageService {
     }
 
     @Override
-    public StorageResult delete(StorageData storageData) throws StorageException {
+    public StorageResult delete(StorageData<Void> storageData) throws StorageException {
 //        try {
 //            s3Client.deleteObject(
 //                    DeleteObjectRequest.builder()

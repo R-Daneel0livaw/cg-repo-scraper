@@ -3,17 +3,20 @@ package com.olivaw.codegraph.scraper.model;
 import java.io.File;
 import java.util.List;
 
-public class StorageData {
+public class StorageData<T> {
 
     private String targetPath;
     private List<File> files;
 
+    private T data;
+
+
     public StorageData() {
     }
 
-    public StorageData(String targetPath, List<File> files) {
+    public StorageData(String targetPath, T data) {
         this.targetPath = targetPath;
-        this.files = files;
+        this.data = data;
     }
 
     public String getTargetPath() {
@@ -30,5 +33,13 @@ public class StorageData {
 
     public void setFiles(List<File> files) {
         this.files = files;
+    }
+
+    public T getData() {
+        return data;
+    }
+
+    public void setData(T data) {
+        this.data = data;
     }
 }

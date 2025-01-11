@@ -3,16 +3,21 @@ package com.olivaw.codegraph.scraper.service.storage;
 import com.olivaw.codegraph.scraper.exception.StorageException;
 import com.olivaw.codegraph.scraper.model.StorageData;
 import com.olivaw.codegraph.scraper.model.StorageResult;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
-public class LocalFileSystemStorageService implements StorageService {
+@Service
+@Qualifier("localFileStorageService")
+public class LocalFileSystemStorageService implements StorageService<List<File>> {
     @Override
-    public StorageResult store(StorageData storageData) throws StorageException {
+    public StorageResult store(StorageData<List<File>> storageData) throws StorageException {
         File targetDirectory = new File(storageData.getTargetPath());
 
         if (!targetDirectory.exists()) {
@@ -38,7 +43,7 @@ public class LocalFileSystemStorageService implements StorageService {
     }
 
     @Override
-    public StorageResult retrieve(StorageData storageData) throws StorageException {
+    public StorageResult retrieve(StorageData<List<File>> storageData) throws StorageException {
         try {
             Files.readAllBytes(Paths.get(storageData.getTargetPath()));
         } catch (IOException e) {
@@ -48,7 +53,7 @@ public class LocalFileSystemStorageService implements StorageService {
     }
 
     @Override
-    public StorageResult delete(StorageData storageData) throws StorageException {
+    public StorageResult delete(StorageData<List<File>> storageData) throws StorageException {
         try {
             Files.deleteIfExists(Paths.get(storageData.getTargetPath()));
         } catch (IOException e) {

@@ -62,11 +62,11 @@ public class GitHubService implements VersionControlService {
         return config;
     }
 
-    private StorageService getStorageService(VersionControlRequest request) {
+    private StorageService<?> getStorageService(VersionControlRequest request) {
         return StorageServiceFactory.getService(request.getVersionControlDestination().getDestinationType());
     }
 
-    private StorageResult storeData(VersionControlRequest versionControlRequest, GitActionResult<List<File>> gitActionResult) {
+    private <T> StorageResult storeData(VersionControlRequest versionControlRequest, GitActionResult<T> gitActionResult) {
         var storageService = getStorageService(versionControlRequest);
         return storageService.store(new StorageData(versionControlRequest.getVersionControlDestination().getLocalPath(),
                 gitActionResult.getData()));
