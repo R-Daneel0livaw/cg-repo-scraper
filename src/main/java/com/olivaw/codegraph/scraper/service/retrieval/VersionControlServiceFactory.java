@@ -23,14 +23,4 @@ public class VersionControlServiceFactory {
             throw new IllegalArgumentException("Unsupported version control system");
         }
     }
-
-//    public static VersionControlService getService(String url) {
-//        if (url.contains("github.com")) {
-//            return new GitHubService();
-//        } else if (url.startsWith("file://")) {
-//            return new LocalFileSystemService();
-//        } else {
-//            throw new IllegalArgumentException("Unsupported version control system");
-//        }
-//    }
 }
