@@ -75,7 +75,7 @@ public class GitHubService implements VersionControlService {
     }
 
     private <T> StorageResult storeData(VersionControlRequest versionControlRequest, GitActionResult<T> gitActionResult) {
-        StorageService<T> storageService = storageServiceFactory.getService("");
+        StorageService<T> storageService = storageServiceFactory.getService(versionControlRequest.getVersionControlDestination().getDestinationType());
         StorageData<T> storageData = new StorageData<>(
                 versionControlRequest.getVersionControlDestination().getLocalPath(),
                 gitActionResult.getData()
