@@ -17,8 +17,12 @@ import java.util.List;
 @Qualifier("gitHubService")
 public class GitHubService implements VersionControlService {
 
+    private final StorageServiceFactory storageServiceFactory;
+
     @Autowired
-    StorageServiceFactory storageServiceFactory;
+    public GitHubService(StorageServiceFactory storageServiceFactory) {
+        this.storageServiceFactory = storageServiceFactory;
+    }
 
     @Override
     public VersionControlResponse fetchLatestFiles(VersionControlRequest request) {

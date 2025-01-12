@@ -6,6 +6,7 @@ import com.olivaw.codegraph.scraper.service.retrieval.VersionControlService;
 import com.olivaw.codegraph.scraper.service.retrieval.VersionControlServiceFactory;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,6 +16,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/vcs")
 public class VersionControlController {
+
+    private final VersionControlServiceFactory versionControlServiceFactory;
+
+    @Autowired
+    public VersionControlController(VersionControlServiceFactory versionControlServiceFactory) {
+        this.versionControlServiceFactory = versionControlServiceFactory;
+    }
 
     @Operation(summary = "Get all files at specified location.")
     @ApiResponse(responseCode = "200", description = "Successfully retrieved the files")
@@ -69,7 +77,7 @@ public class VersionControlController {
     }
 
     private VersionControlService getVersionControlService(VersionControlRequest request) {
-        return VersionControlServiceFactory.getService(request.getVersionControlRepoIdentification().getRepoLocation());
+        return versionControlServiceFactory.getService(request.getVersionControlRepoIdentification().getRepoLocation());
     }
 
     private VersionControlResponse getErrorResponse(String message) {

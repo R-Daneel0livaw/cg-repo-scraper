@@ -1,14 +1,36 @@
 package com.olivaw.codegraph.scraper.service.retrieval;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 public class VersionControlServiceFactory {
 
-    public static VersionControlService getService(String url) {
+
+    private final GitHubService gitHubService;
+    private final LocalFileSystemService localFileSystemService;
+
+    @Autowired
+    public VersionControlServiceFactory(GitHubService gitHubService, LocalFileSystemService localFileSystemService) {
+        this.gitHubService = gitHubService;
+        this.localFileSystemService = localFileSystemService;
+    }
+
+    public VersionControlService getService(String url) {
         if (url.contains("github.com")) {
-            return new GitHubService();
+            return gitHubService;
         } else if (url.startsWith("file://")) {
-            return new LocalFileSystemService();
+            return localFileSystemService;
         } else {
             throw new IllegalArgumentException("Unsupported version control system");
         }
     }
+
+//    public static VersionControlService getService(String url) {
+//        if (url.contains("github.com")) {
+//            return new GitHubService();
+//        } else if (url.startsWith("file://")) {
+//            return new LocalFileSystemService();
+//        } else {
+//            throw new IllegalArgumentException("Unsupported version control system");
+//        }
+//    }
 }
