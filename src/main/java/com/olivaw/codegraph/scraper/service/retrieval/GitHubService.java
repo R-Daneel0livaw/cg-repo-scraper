@@ -6,6 +6,7 @@ import com.olivaw.codegraph.scraper.service.VersionControlResponseBuilder;
 import com.olivaw.codegraph.scraper.service.storage.StorageService;
 import com.olivaw.codegraph.scraper.service.storage.StorageServiceFactory;
 import com.olivaw.codegraph.scraper.utils.GitUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,9 @@ import java.util.List;
 @Service
 @Qualifier("gitHubService")
 public class GitHubService implements VersionControlService {
+
+    @Autowired
+    StorageServiceFactory storageServiceFactory;
 
     @Override
     public VersionControlResponse fetchLatestFiles(VersionControlRequest request) {
@@ -66,16 +70,13 @@ public class GitHubService implements VersionControlService {
         return config;
     }
 
-    private StorageService<?> getStorageService(VersionControlRequest request) {
-        return StorageServiceFactory.getService(request.getVersionControlDestination().getDestinationType());
-    }
-
     private <T> StorageResult storeData(VersionControlRequest versionControlRequest, GitActionResult<T> gitActionResult) {
-        var storageService = getStorageService(versionControlRequest);
-        return storageService.store(new StorageData(versionControlRequest.getVersionControlDestination().getLocalPath(),
-                gitActionResult.getData()));
-        // Need to determine how we can make getStorageService and storeData and storageService.store all using the same type.
-
+        StorageService<T> storageService = storageServiceFactory.getService("");
+        StorageData<T> storageData = new StorageData<>(
+                versionControlRequest.getVersionControlDestination().getLocalPath(),
+                gitActionResult.getData()
+        );
+        return storageService.store(storageData);
     }
 
     private VersionControlResponse getVersionControlResponse(StorageResult storageResult) {
