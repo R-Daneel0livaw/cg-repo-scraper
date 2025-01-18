@@ -4,6 +4,7 @@ import com.olivaw.codegraph.scraper.exception.StorageException;
 import com.olivaw.codegraph.scraper.model.StorageData;
 import com.olivaw.codegraph.scraper.model.StorageResult;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -16,9 +17,15 @@ import java.util.List;
 @Service
 @Qualifier("localFileStorageService")
 public class LocalFileSystemStorageService implements StorageService<List<File>> {
+
+    @Value("${storage.basePath}")
+    private String basePath;
+
     @Override
     public StorageResult store(StorageData<List<File>> storageData) throws StorageException {
-        File targetDirectory = new File(storageData.getTargetPath());
+        Path combinedPath = !storageData.getTargetPath().isEmpty() ? Paths.get(basePath, storageData.getTargetPath())
+                : Paths.get(basePath);
+        File targetDirectory = combinedPath.toFile();
 
         if (!targetDirectory.exists()) {
             boolean created = targetDirectory.mkdirs();
