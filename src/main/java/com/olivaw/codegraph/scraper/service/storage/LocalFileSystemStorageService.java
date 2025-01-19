@@ -3,6 +3,7 @@ package com.olivaw.codegraph.scraper.service.storage;
 import com.olivaw.codegraph.scraper.exception.StorageException;
 import com.olivaw.codegraph.scraper.model.StorageData;
 import com.olivaw.codegraph.scraper.model.StorageResult;
+import com.olivaw.codegraph.scraper.utils.FileUtils;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -18,26 +19,20 @@ import java.util.List;
 @Qualifier("localFileStorageService")
 public class LocalFileSystemStorageService implements StorageService<List<File>> {
 
-    @Value("${storage.basePath}")
-    private String basePath;
-
     @Override
     public StorageResult store(StorageData<List<File>> storageData) throws StorageException {
-        Path combinedPath = !storageData.getTargetPath().isEmpty() ? Paths.get(basePath, storageData.getTargetPath())
-                : Paths.get(basePath);
-        File targetDirectory = combinedPath.toFile();
+        Path targetDirectory;
 
-        if (!targetDirectory.exists()) {
-            boolean created = targetDirectory.mkdirs();
-            if (!created) {
-                throw new StorageException("Failed to create target directory: " + targetDirectory.getAbsolutePath());
-            }
+        try {
+            targetDirectory = FileUtils.createTargetDirectory(storageData.getTargetPath());
+        } catch (IOException e) {
+            throw new StorageException("Failed to create target directory: " + storageData.getTargetPath(), e);
         }
 
-        for (File file : storageData.getFiles()) {
+        for (File file : storageData.getData()) {
             if (file.isFile()) {
                 Path sourcePath = file.toPath();
-                Path targetPath = new File(targetDirectory, file.getName()).toPath();
+                Path targetPath = targetDirectory.resolve(file.getName());
 
                 try {
                     Files.copy(sourcePath, targetPath);
